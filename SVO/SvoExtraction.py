@@ -175,6 +175,11 @@ class SvoExtraction(object):
         # print(sentence)
         subject_idx = next((i for i, v in enumerate(sentence)
                             if v[0].lower() == subject), None)
+        endindex = None
+        for i, v in enumerate(sentence):
+            if v[1] == ".":
+                endindex = i
+
         data = {'subject': subject}
         for i in range(subject_idx, len(sentence)):
             found_action = False
@@ -185,7 +190,11 @@ class SvoExtraction(object):
                     data['object'] = token
                     # data['phrase'] = sentence[i: i + j + 2]
                     data['phrase'] = sentence[i:]
-                    data['plainPhrase'] = ' '.join([term[0] for term in
-                                                    sentence[i:]])
+                    if endindex:
+                        data['plainPhrase'] = ' '.join([term[0] for term in
+                                                        sentence[i:endindex+1]])
+                    else:
+                        data['plainPhrase'] = ' '.join([term[0] for term in
+                                                        sentence[i:]])
                     return data
         return {}

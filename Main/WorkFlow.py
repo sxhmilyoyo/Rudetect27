@@ -369,7 +369,13 @@ class WorkFlow(object):
             print("opinions for {} have been saved.".format(subjectFolderPath))
 
     def getCorpus4Classification(self, folderpath, flag):
-        """Get corpus as .csv file for further classification."""
+        """Get corpus as .csv file for further classification.        
+        Arguments:
+            folderpath {str} -- the path to data folder
+            flag {str} -- 'event': get corpus for whole tweets.
+                          'cluster': get corpus for each cluster.
+        """
+        
         folderPath = os.path.join(folderpath, 'final')
         if flag == 'cluster':
             s2vs = self.helper.loadJson(folderPath+"/subject2svoqueries.json")

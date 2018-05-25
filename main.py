@@ -80,19 +80,18 @@ def main(rootpath, folderpath, query, start, end):
     print('-'*100)
     workFlow.run4cluster()
     print('='*100)
-    # get corpus for classification of the event
-    """print('='*100)
-    print('Getting corpus for classification of the event ...')
-    print('-'*100)
-    workFlow.getCorpus4Classification(folderpath, 'event')
-    print('='*100)"""
+    # # get corpus for classification of the event
+    # print('='*100)
+    # print('Getting corpus for classification of the event ...')
+    # print('-'*100)
+    # workFlow.getCorpus4Classification(folderpath, 'event')
+    # print('='*100)
     # get similarity between statements of the event
-    """print('='*100)
+    print('='*100)
     print('Getting similarity between statements ...')
-    print(folderpath)
     print('-'*100)
     workFlow.getSimilarity4Statements(folderpath)
-    print('='*100)"""
+    print('='*100)
     # events = [d for d in os.listdir(rootpath) if os.path.isdir(rootpath+"/"+d)]
     # topics = []
     # for event in events:

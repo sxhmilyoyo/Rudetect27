@@ -363,8 +363,8 @@ class PreprocessData(object):
                 queries.append([topic, svoquery['query']])
                 c1 = self.cleanTweet4Word2Vec(svoquery['svo'])
                 total.append(c1.lower())
-        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_queries.csv", ['Subject', 'Query'], data)        
-        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", ['Subject', 'Statement'], queries)        
+        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_queries.csv", ['Subject', 'Query'], queries)        
+        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", ['Subject', 'Statement'], data)        
         return total
 
     def getCorpus4csvFromSnippets(self, folderpath):
