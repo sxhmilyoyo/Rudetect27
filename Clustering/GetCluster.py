@@ -46,7 +46,7 @@ class GetCluster(object):
 
         """
         num_clusters = numClusters
-        model = self.helper.getWord2vec(self.rootPath)
+        model = self.helper.getWord2vec()
         w2v = {w: vec for w, vec in zip(model.wv.index2word, model.wv.syn0)}
 
         # meanW2vTfidf = Pipeline([("word2vec vectorizer",

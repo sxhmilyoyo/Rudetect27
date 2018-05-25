@@ -58,12 +58,12 @@ class PreprocessData(object):
 
         remove URL, EMOJI, MENTION, SMILEY, HASHTAGS, ASCII
         """
-        if 'http' in text:
-            text = text[:text.find('http') - 1]
+        # if 'http' in text:
+        #     text = text[:text.find('http') - 1]
         p.set_options(p.OPT.URL, p.OPT.EMOJI, p.OPT.MENTION, p.OPT.SMILEY)
         cleaned = p.clean(text.encode('utf-8'))
         noHashtags = ' '.join(re.sub("([#])", " ", cleaned).split())
-        noAscii = re.sub(r'[^\x00-\x7F]', '_', noHashtags)
+        noAscii = re.sub(r'[^\x00-\x7F]', '', noHashtags)
         return noAscii
 
     def getCorpus(self, folderPath):
@@ -334,7 +334,7 @@ class PreprocessData(object):
         return total
 
     def getCandidateStatements4Cluster(self, folderPath):
-        """Get candiadate statements for each cluster.
+        """Get candidate statements from subject2svoqueries.json for each cluster.
 
         Parameters
         ----------
@@ -364,7 +364,7 @@ class PreprocessData(object):
                 c1 = self.cleanTweet4Word2Vec(svoquery['svo'])
                 total.append(c1.lower())
         self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_queries.csv", ['Subject', 'Query'], data)        
-        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", ['Subject', 'Statement'], data)        
+        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", ['Subject', 'Statement'], queries)        
         return total
 
     def getCorpus4csvFromSnippets(self, folderpath):

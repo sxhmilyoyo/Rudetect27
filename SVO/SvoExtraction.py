@@ -96,6 +96,7 @@ class SvoExtraction(object):
         existing: set to True if already trained tagger has been pickled.
         """
         if existing:
+            print("trained_tagger.pkl is existed.")
             trigram_tagger = pickle.load(open(os.path.join(fullPath,
                                                            'trained_tagger.pkl'),
                                               'rb'))
@@ -111,7 +112,7 @@ class SvoExtraction(object):
         pickle.dump(trigram_tagger, open(os.path.join(fullPath,
                                                       'trained_tagger.pkl'),
                                          'wb'))
-        print ("Finished training and saving it to trained_tagger.pkl.")
+        print ("Finished training and saving it to {} trained_tagger.pkl.".format(fullPath))
         return trigram_tagger
 
     def tag_sentences(self, fullPath, subject, document):

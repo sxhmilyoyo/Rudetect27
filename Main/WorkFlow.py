@@ -226,12 +226,12 @@ class WorkFlow(object):
                 topic_words = self.helper.loadJson(topic_file)
                 subjects = svoExtraction.extract_subject(document,
                                                          topic_words['0'],
-                                                         fullPath)
+                                                         self.rootpath)
             else:
                 topic_words = None
                 subjects = svoExtraction.extract_subject(document,
                                                          topic_words,
-                                                         fullPath)
+                                                         self.rootpath)
             self.helper.dumpJson(folderPath, 'subjects.json', subjects)
             print("subjects.json has been saved.")
         else:
@@ -241,7 +241,8 @@ class WorkFlow(object):
         subject2svos = {}
         for subject in subjects:
             print("extracting for subject: {}".format(subject))
-            taggedSents = svoExtraction.tag_sentences(fullPath, subject,
+            print(self.rootpath)
+            taggedSents = svoExtraction.tag_sentences(self.rootpath, subject,
                                                       document)
             # print(taggedSents)
             svos = [
@@ -417,7 +418,14 @@ class WorkFlow(object):
         self.helper.dumpCsv(folderpath+"/final", "similarities.csv", ['statement', 'similarity'], data)
 
     def getSimilarityStatements2Tweets(self, folderpath):
-        """Get similarity between candidate statements and tweets."""
+        """Get similarity between candidate statements and tweets.
+        
+        Arguments:
+            folderpath {str} -- the path to data folder
+        
+        Returns:
+            None -- index_candiadate_statement_2_index_tweet.json is generated.
+        """
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
         tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements4Cluster(folderpath)
         print("length of statements ", len(tokens_statements))
@@ -425,6 +433,10 @@ class WorkFlow(object):
         tokens_tweets, id2tweets = getSimilarity.getCorpusFromTweets4Cluster(folderpath)
         print("length of tweets ", len(tokens_tweets))
 
+        # return None if any of them is None
+        if len(tokens_statements) == 0 or len(tokens_tweets) == 0:
+            print("no statements or tweets.")
+            return
         vectors_candidates = getSimilarity.getVector(tokens_statements)
         print("shape of vectors_candidates ", vectors_candidates.shape)
         vector_tweets = getSimilarity.getVector(tokens_tweets)
@@ -459,7 +471,7 @@ class WorkFlow(object):
             folderFullPath = os.path.join(folderPath, foldername)
             print(folderFullPath)
             print("Running code for {}".format(folderFullPath))
-            """print("Running getTopicPmi.py ...")
+            print("Running getTopicPmi.py ...")
             # subprocess.call(args)
             try:
                 self.getTopicPmi(folderFullPath, 1)
@@ -470,14 +482,10 @@ class WorkFlow(object):
             print("Running extractSVOs ...")
             self.extractSVOs(folderFullPath)
             print("Running getQuery ...")
-            self.getQuery(folderFullPath)"""
-            # print("Running getSimilarityStatements2Tweets ...")
-            # try:
-            #     self.getSimilarityStatements2Tweets(folderFullPath)
-            # except:
-            #     print("{} is wrong".format(foldername))
-            #     continue
-            print("Runnig getSnippets ...")
+            self.getQuery(folderFullPath)
+            print("Running getSimilarityStatements2Tweets ...")
+            self.getSimilarityStatements2Tweets(folderFullPath)
+            print("Runnig getSnippets ...")            
             self.getSnippets(folderFullPath)
             print("Running getCorpus4Classification ...")
             self.getCorpus4Classification(folderFullPath, 'cluster')

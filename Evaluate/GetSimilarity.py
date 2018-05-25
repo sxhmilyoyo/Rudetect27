@@ -32,9 +32,9 @@ class GetSimilarity(object):
         elif vectorizer == 'tfidf':
             self.vectorizer = TfidfEmbeddingVectorizer
         else:
-            print ("Wrong vectorizer! Options: mean (str): " +
-                   "MeanEmbeddingVectorizer; tfidf (str): " +
-                   "TfidfEmbeddingVectorizer")
+            print("Wrong vectorizer! Options: mean (str): " +
+                  "MeanEmbeddingVectorizer; tfidf (str): " +
+                  "TfidfEmbeddingVectorizer")
         self.rootPath = rootPath
         self.helper = Utility.Helper(rootPath)
         self.preprocessData = Utility.PreprocessData(rootPath)
@@ -51,7 +51,16 @@ class GetSimilarity(object):
         return res
 
     def getCorpusFromCandidateStatements(self, folderPath):
-        candiadateStatements = self.preprocessData.getCandidateStatements(folderPath)
+        """Get svo from subject2svoqueries.json file.
+        
+        Arguments:
+            folderPath {string} -- the path to data folder
+        
+        Returns:
+            tuple -- (tokens, id2candiadateStatements)
+        """
+        candiadateStatements = self.preprocessData.getCandidateStatements(
+            folderPath)
         id2candiadateStatements = dict(enumerate(candiadateStatements))
         tokens = []
         for candiadateStatement in candiadateStatements:
@@ -60,6 +69,14 @@ class GetSimilarity(object):
         return tokens, id2candiadateStatements
 
     def getCorpusFromTargetStatements(self, folderPath):
+        """Get target statements from target_statement.txt.
+        
+        Arguments:
+            folderPath {str} -- the path to data folder
+        
+        Returns:
+            list -- [token]
+        """
         with open(os.path.join(self.rootPath, folderPath, 'final', 'target_statement.txt')) as fp:
             statement = fp.read()
         c1 = self.preprocessData.cleanTweet(statement)
@@ -76,6 +93,14 @@ class GetSimilarity(object):
         return tfidfX
 
     def getCorpusFromTweets4Cluster(self, folderPath):
+        """Get tweets in token format for clustering.
+        
+        Arguments:
+            folderPath {str} -- the path to data folder
+        
+        Returns:
+            tuple -- (tokens, id2tweets)
+        """
         tweets = self.preprocessData.getTweetsFromTweetsLine(folderPath)
         id2tweets = dict(enumerate(tweets))
         tokens = []
@@ -83,9 +108,18 @@ class GetSimilarity(object):
             token = self.preprocessData.getTokens(tweet)
             tokens.append(token)
         return tokens, id2tweets
-    
+
     def getCorpusFromCandidateStatements4Cluster(self, folderPath):
-        candiadateStatements = self.preprocessData.getCandidateStatements4Cluster(folderPath)
+        """Get candidate statements in token format for clustering.
+        
+        Arguments:
+            folderPath {str} -- the path to folder
+        
+        Returns:
+            tuple -- (tokens, id2candiadateStatements)
+        """
+        candiadateStatements = self.preprocessData.getCandidateStatements4Cluster(
+            folderPath)
         id2candiadateStatements = dict(enumerate(candiadateStatements))
         tokens = []
         for candiadateStatement in candiadateStatements:
