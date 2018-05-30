@@ -45,19 +45,18 @@ def main(rootpath, folderpath, query, start, end):
     helper = Utility.Helper(rootpath)
     workFlow = Main.WorkFlow(rootpath, folderpath)
     # get tweets
-    """
-    print('='*100)
+
+    """print('='*100)
     print('Getting tweets ...')
     print('='*100)
-    workFlow.getTweets(query, start, end)
-    """
-    """
-    # get word2vec
+    workFlow.getTweets(query, start, end)"""
+
+    """# get word2vec
     print('='*100)
     print('Getting word2vec ...')
     print('='*100)
-    workFlow.getWord2Vec()
-    """
+    workFlow.getWord2Vec()"""
+    
     # get the topic model
     print('='*100)
     print('Getting topic model ...')
@@ -80,12 +79,12 @@ def main(rootpath, folderpath, query, start, end):
     print('-'*100)
     workFlow.run4cluster()
     print('='*100)
-    # # get corpus for classification of the event
-    # print('='*100)
-    # print('Getting corpus for classification of the event ...')
-    # print('-'*100)
-    # workFlow.getCorpus4Classification(folderpath, 'event')
-    # print('='*100)
+    # get corpus for classification of the event
+    print('='*100)
+    print('Getting corpus for classification of the event ...')
+    print('-'*100)
+    workFlow.getCorpus4Classification(folderpath, 'event')
+    print('='*100)
     # get similarity between statements of the event
     print('='*100)
     print('Getting similarity between statements ...')

@@ -210,7 +210,7 @@ class GetTweets(object):
 
         folderPath = os.path.join(self.folderpath, 'experiment')
         # filename = "tweets.pkl"
-        maxTweets = 3000
+        maxTweets = 1000
 
         print ("*" * 100)
         print ("crawling with query {}...".format(originquery))
@@ -242,5 +242,6 @@ class GetTweets(object):
         print ("finally crawling with query {}...".format(finalQ))
         # times += 1
         tweetFlag = True
+        maxTweets = 3000
         folderPath = os.path.join(self.folderpath, 'final')
         self.get_address_twitter(finalQ, folderPath, maxTweets, tweetFlag)

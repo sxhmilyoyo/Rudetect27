@@ -36,6 +36,8 @@ class Helper(object):
     def loadPickle(self, filePath):
         """Load .pkl."""
         # with codecs.open(os.path.join(self.rootPath, filePath), "rb",encoding='utf-8', errors='ignore') as fp:
+        if not os.path.exists(os.path.join(self.rootPath, filePath)):
+            return None
         with open(os.path.join(self.rootPath, filePath), 'rb') as fp:
             data = pickle.load(fp)
         return data
@@ -50,6 +52,8 @@ class Helper(object):
 
     def loadJson(self, filePath):
         """Load .json."""
+        if not os.path.exists(os.path.join(self.rootPath, filePath)):
+            return None
         with open(os.path.join(self.rootPath, filePath)) as fp:
             data = json.load(fp)
         return data
@@ -92,6 +96,8 @@ class Helper(object):
 
     def loadCsv(self, folderPath, filename):
         details = []
+        if not os.path.exists(os.path.join(self.rootPath, folderPath, filename)):
+            return None
         with open(os.path.join(self.rootPath, folderPath, filename)) as fp:
             reader = csv.reader(fp, delimiter='\t')
             next(reader)

@@ -430,7 +430,7 @@ class WorkFlow(object):
             folderpath {str} -- the path to data folder
         
         Returns:
-            None -- index_candiadate_statement_2_index_tweet.json is generated.
+            None -- index_candiadate_statement_2_index_tweet.json and index_tweet_2_index_candiadate_statement.json are generated.
         """
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
         tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements4Cluster(folderpath)
@@ -454,6 +454,7 @@ class WorkFlow(object):
 
         # get max indeices of candidates statement for each tweet
         index_tweet_2_max_index_candiadate_statement = enumerate(list(np.argmax(similarities, axis=1)))
+        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candiadate_statement.json", index_tweet_2_max_index_candiadate_statement)
         # reverse the key and value
         max_index_candiadate_statement_2_index_tweet = defaultdict(list)
         for tid, sid in index_tweet_2_max_index_candiadate_statement:

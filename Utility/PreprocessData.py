@@ -265,7 +265,7 @@ class PreprocessData(object):
         # with open(os.path.join(self.rootPath, folderPath, "candidate_statements.txt")) as fp:
             # statements = fp.readlines()
         statements = self.helper.loadCsv(folderPath, "candidate_statements.csv")
-        if len(statements) == 0:
+        if statements is None or len(statements) == 0:
             return
         # p = os.path.join(self.rootPath, folderPath, "corpus_statements.csv")
 
@@ -308,7 +308,7 @@ class PreprocessData(object):
 
         """
         folderPath = os.path.join(folderPath, 'final', 'clusterData')
-        foldernames = os.listdir(os.path.join(self.rootPath, folderPath))
+        foldernames = [i for i in os.listdir(os.path.join(self.rootPath, folderPath)) if os.path.isdir(os.path.join(self.rootPath, folderPath, i))]
         total = []
         for foldername in foldernames:
             filePath = os.path.join(folderPath, foldername, 'final', "subject2svoqueries.json")
@@ -382,7 +382,7 @@ class PreprocessData(object):
 
         """
         snippets = self.helper.loadJson(folderpath+"/snippets.json")
-        if len(snippets) == 0:
+        if snippets is None or len(snippets) == 0:
             return
         
         title = ['ID', 'Target', 'Tweet', 'Stance', 'Origin', 'Total', 'Origin_ID']
