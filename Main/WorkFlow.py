@@ -454,12 +454,24 @@ class WorkFlow(object):
 
         # get max indeices of candidates statement for each tweet
         index_tweet_2_max_index_candiadate_statement = enumerate(list(np.argmax(similarities, axis=1)))
-        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candiadate_statement.json", index_tweet_2_max_index_candiadate_statement)
+        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candidate_statement.json", dict(index_tweet_2_max_index_candiadate_statement))
         # reverse the key and value
         max_index_candiadate_statement_2_index_tweet = defaultdict(list)
         for tid, sid in index_tweet_2_max_index_candiadate_statement:
             max_index_candiadate_statement_2_index_tweet[sid].append(tid)
-        self.helper.dumpJson(folderpath+"/final", "index_candiadate_statement_2_index_tweet.json", max_index_candiadate_statement_2_index_tweet)
+        self.helper.dumpJson(folderpath+"/final", "index_candidate_statement_2_index_tweet.json", max_index_candiadate_statement_2_index_tweet)
+
+    def getTweet2Statement(self, folderpath):
+        print(os.path.join(folderpath, "final", "index_candidate_statement_2_index_tweet.json"))
+        statement2tweet = self.helper.loadJson(os.path.join(folderpath, "final", "index_candidate_statement_2_index_tweet.json"))
+        if not statement2tweet:
+            print("no index_candidate_statement_2_index_tweet.json.")
+            return
+        tweet2statement = {}
+        for sid in statement2tweet:
+            for tid in statement2tweet[sid]:
+                tweet2statement[tid] = int(sid)
+        self.helper.dumpJson(os.path.join(self.rootpath, folderpath, "final"), "index_tweet_2_index_candidate_statement.json", tweet2statement)
 
     def run4cluster(self):
         """Run getTopicPmi, extractSVOs and getQuery for each cluster.
@@ -496,5 +508,8 @@ class WorkFlow(object):
             self.getSnippets(folderFullPath)
             print("Running getCorpus4Classification ...")
             self.getCorpus4Classification(folderFullPath, 'cluster')
+
+            # print("Running getTweet2Statement ...")
+            # self.getTweet2Statement(folderFullPath)
             
             

@@ -12,13 +12,13 @@ def main(rootpath):
     folders = [folder for folder in os.listdir(rootpath) if os.path.isdir(rootpath+"/"+folder)]
     print(folders)
     for folder in folders:
-        if folder != 'Gabapentin_0628_0121':
-            continue
+        # if folder != 'Gabapentin_0628_0121':
+        #     continue
         print ("Running code for {}".format(folder))
-        args = ['python', 'main.py', '-r', '/home/hao/Workplace/HaoXu/Data/Rudetect_test',
+        args = ['python', 'main.py', '-r', rootpath,
                 '-f', folder, '-q', 'test', '-s', 'test', '-e', 'test']
         subprocess.call(args)
-        time.sleep(random.randint(1, 121))
+        # time.sleep(random.randint(1, 121))
 
 
 if __name__ == '__main__':

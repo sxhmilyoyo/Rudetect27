@@ -177,7 +177,7 @@ class GetTweets(object):
             for ot in originhashtags:
                 # filter out hashtags: order of magnitudes(hashtags) > order of
                 # magnitudes(original hashtags)
-                if len(str(st[1])) > len(str(originHashtagsPopular[ot])):
+                if st[1] > originHashtagsPopular[ot]:
                     rm.append(st[0])
                     break
         filterH = [h for h in hashtagsPopular.keys() if h not in rm]
