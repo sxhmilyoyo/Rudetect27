@@ -46,10 +46,10 @@ def main(rootpath, folderpath, query, start, end):
     workFlow = Main.WorkFlow(rootpath, folderpath)
     # get tweets
 
-    """print('='*100)
+    print('='*100)
     print('Getting tweets ...')
     print('='*100)
-    workFlow.getTweets(query, start, end)"""
+    workFlow.getTweets(query, start, end)
 
     """# get word2vec
     print('='*100)
@@ -57,7 +57,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     workFlow.getWord2Vec()"""
     
-    # get the topic model
+    """# get the topic model
     print('='*100)
     print('Getting topic model ...')
     print('-'*100)
@@ -90,7 +90,7 @@ def main(rootpath, folderpath, query, start, end):
     print('Getting similarity between statements ...')
     print('-'*100)
     workFlow.getSimilarity4Statements(folderpath)
-    print('='*100)
+    print('='*100)"""
     # events = [d for d in os.listdir(rootpath) if os.path.isdir(rootpath+"/"+d)]
     # topics = []
     # for event in events:

@@ -1,9 +1,9 @@
 # import sys
 # sys.path.append('../GetOldTweets-python')
-import got
+import got3
 # sys.path.append('..')
 from collections import defaultdict
-# from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz
 # from Utility.Helper import Helper
 import matplotlib
 matplotlib.use('Agg')
@@ -37,7 +37,7 @@ class AddressTweet(object):
         self.rootPath = rootPath
         self.helper = Utility.Helper(self.rootPath)
 
-    def getHashtags(self, filePath):
+    def getHashtags(self, filePath, query):
         """Get hashtags from tweet object and save it in .pkl file.
 
         Save the hashtags(dict) into hashTags.pkl
@@ -61,8 +61,17 @@ class AddressTweet(object):
                 hashTaglist = tweet.hashtags.split()
                 for hashTag in hashTaglist:
                     hashTags[hashTag] += 1
+        s = self.getSimilarHashTags(query, list(hashTags))
+        print(s)
+
         sortedHashTags = self.sortDict(hashTags)
         top10HashTags = self.getTop10(hashTags, sortedHashTags)
+        top10 = set([key for key in top10HashTags.keys()])
+        for h in s.keys():
+            if h in top10:
+                continue
+            top10HashTags[h] = (0, 0)
+
         self.helper.dumpPickle(filePath, "hashTags.pkl", hashTags)
         print ("hashTags.pkl has been saved.")
         self.helper.dumpPickle(filePath, "sortedHashTags.pkl", sortedHashTags)
@@ -197,27 +206,29 @@ class AddressTweet(object):
         tweetNum[query] = totalNumTweets
         self.helper.dumpJson(folderPath, 'tweetNum.json', tweetNum)
 
-    # def getSimilarHashTags(self, originHashtag, hashtags):
-    #     """Get similar hashtags w.r.t. the original hashtags.
-    #
-    #     Args:
-    #         hashtags (list): a list of hashtags from the tweets
-    #         orignHashtags (str): the initial hashtag
-    #     Returns:
-    #         list: similarHashTags
-    #     """
-    #     hashtag2score = {}
-    #     for hashtag in hashtags:
-    #         simScore = max(fuzz.token_set_ratio(originHashtag, hashtag),
-    #                        fuzz.partial_ratio(originHashtag, hashtag) if
-    #                        len(originHashtag) < len(hashtag) else 0)
-    #         hashtag2score[hashtag] = simScore
-    #     # average = sum(temp.values()) / float(len(temp.keys()))
-    #     # print ("hashtag2score is {}".format(self.sortDict(hashtag2score)))
-    #     res = {h: hashtag2score[h] for h in hashtag2score if hashtag2score[h]
-    #            > 70}
-    #     # print ("new hashtags are: {}".format(res))
-    #     return res
+    def getSimilarHashTags(self, originHashtag, hashtags):
+        """Get similar hashtags w.r.t. the original hashtags.
+    
+        Args:
+            hashtags (list): a list of hashtags from the tweets
+            orignHashtags (str): the initial hashtag
+        Returns:
+            list: similarHashTags
+        """
+        hashtag2score = {}
+        for hashtag in hashtags:
+            if originHashtag == hashtag:
+                continue
+            simScore = max(fuzz.token_set_ratio(originHashtag, hashtag),
+                           fuzz.partial_ratio(originHashtag, hashtag) if
+                           len(originHashtag) < len(hashtag) else 0)
+            hashtag2score[hashtag] = simScore
+        # average = sum(temp.values()) / float(len(temp.keys()))
+        # print ("hashtag2score is {}".format(self.sortDict(hashtag2score)))
+        res = {h: hashtag2score[h] for h in hashtag2score if hashtag2score[h]
+               >= 90}
+        # print ("new hashtags are: {}".format(res))
+        return res
     #
     # def getFinalTop10HashTags(self, similarHashTags, hashtags):
     #     """Get the top10 hashtags based on the formula: times.

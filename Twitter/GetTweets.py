@@ -43,7 +43,7 @@ class GetTweets(object):
         self.addressTweet = Twitter.AddressTweet(rootpath)
         self.getTwitter = Twitter.GetTwitterData(rootpath)
 
-    def get_address_twitter(self, query, folderPath, maxTweets, tweetFlag):
+    def get_address_twitter(self, query, folderPath, maxTweets):
         """Get and address tweets."""
         print ("start crawling from {} to {} with file {}".format(self.start,
                                                                   self.end,
@@ -57,13 +57,13 @@ class GetTweets(object):
         totalNumTweets = self.getTwitter.getTweets(criteria,
                                                    os.path.join(folderPath,
                                                                 'rawData'),
-                                                   self.filename, tweetFlag)
+                                                   self.filename)
 
         print ("recording the number of tweets...")
         self.addressTweet.recordTweetNum(folderPath, query, totalNumTweets)
         # address tweets
         print ("get hashtags...")
-        self.addressTweet.getHashtags(folderPath)
+        self.addressTweet.getHashtags(folderPath, query)
         print ("get userIdName...")
         self.addressTweet.getUserName(folderPath)
 
@@ -164,7 +164,7 @@ class GetTweets(object):
         # split the hashtagsPopular into original and new
         originHashtagsPopular = {}
         keys = hashtagsPopular.keys()
-        for h in keys:
+        for h in list(keys):
             if h in originhashtags:
                 originHashtagsPopular[h] = hashtagsPopular[h]
                 del hashtagsPopular[h]
@@ -177,11 +177,14 @@ class GetTweets(object):
             for ot in originhashtags:
                 # filter out hashtags: order of magnitudes(hashtags) > order of
                 # magnitudes(original hashtags)
-                if len(str(st[1])) > len(str(originHashtagsPopular[ot])):
+                if st[1] > originHashtagsPopular[ot]:
                     rm.append(st[0])
                     break
-        filterH = [h for h in hashtagsPopular.keys() if h not in rm]
-        finalH = filterH + originHashtagsPopular.keys()
+        filterH = [h for h, num in hashtagsPopular_sorted if h not in rm]
+        print("filterH length is {}".format(len(filterH))
+        l = 20-len(list(originHashtagsPopular.keys()))
+        print("add {} hashtags".format(l))
+        finalH = filterH[:l] + list(originHashtagsPopular.keys())
         return finalH
 
     # @click.command()
@@ -206,7 +209,6 @@ class GetTweets(object):
             # originhashtags = originhashtag.split('AND')
             originhashtags = [self.originhashtag]
             originquery = self.originhashtag
-        tweetFlag = True
 
         folderPath = os.path.join(self.folderpath, 'experiment')
         # filename = "tweets.pkl"
@@ -215,13 +217,14 @@ class GetTweets(object):
         print ("*" * 100)
         print ("crawling with query {}...".format(originquery))
 
-        self.get_address_twitter(originquery, folderPath, maxTweets, tweetFlag)
+        self.get_address_twitter(originquery, folderPath, maxTweets)
 
         # update queries use the top10 hashtags
         top10HashTags = self.helper.loadPickle(os.path.join(folderPath,
                                                             'top10HashTags.pkl'
                                                             ))
-        top10ht = top10HashTags.keys()[:]
+        print(top10HashTags)
+        top10ht = list(top10HashTags.keys())[:]
         print ("original top10 hashtags {}".format(top10ht))
 
         # filtering
@@ -235,13 +238,13 @@ class GetTweets(object):
                     queries.append(ht)
 
         filterH = self.getHashtagPopularity(queries, originhashtags)
+        print("length of finalH is {}".format(len(filterH)))
         finalH = filterH[:]
 
         finalQ = ' OR '.join(finalH)
         print ("*" * 100)
         print ("finally crawling with query {}...".format(finalQ))
         # times += 1
-        tweetFlag = True
         maxTweets = 3000
         folderPath = os.path.join(self.folderpath, 'final')
-        self.get_address_twitter(finalQ, folderPath, maxTweets, tweetFlag)
+        self.get_address_twitter(finalQ, folderPath, maxTweets)

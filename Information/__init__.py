@@ -1,2 +1,2 @@
-from QueryGenerator import QueryGenerator
-from GoogleSnippets import GoogleSnippets
+from .QueryGenerator import QueryGenerator
+from .GoogleSnippets import GoogleSnippets

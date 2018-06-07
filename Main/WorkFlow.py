@@ -5,7 +5,7 @@ from collections import defaultdict
 import Information
 from gensim.models.word2vec import LineSentence
 from gensim.models.word2vec import Word2Vec
-import got
+import got3
 import OpinionMining
 import os
 import random

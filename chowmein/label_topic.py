@@ -1,19 +1,19 @@
 import sys
 sys.path.insert(0, '../chowmein')
 import argparse
-from corpus_processor import CorpusPOSTagger
-from corpus_processor import CorpusStemmer
-from corpus_processor import CorpusWordLengthFilter
-from data import load_lemur_stopwords
-from data import load_line_corpus
-from label_finder import BigramLabelFinder
-from label_ranker import LabelRanker
+from .corpus_processor import CorpusPOSTagger
+from .corpus_processor import CorpusStemmer
+from .corpus_processor import CorpusWordLengthFilter
+from .data import load_lemur_stopwords
+from .data import load_line_corpus
+from .label_finder import BigramLabelFinder
+from .label_ranker import LabelRanker
 import lda
 import numpy as np
-from pmi import PMICalculator
+from .pmi import PMICalculator
 from sklearn.feature_extraction.text import (CountVectorizer
                                              as WordCountVectorizer)
-from text import LabelCountVectorizer
+from .text import LabelCountVectorizer
 
 
 def create_parser():

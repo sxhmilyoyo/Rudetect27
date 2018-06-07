@@ -1,1 +1,1 @@
-from WorkFlow import WorkFlow
+from .WorkFlow import WorkFlow

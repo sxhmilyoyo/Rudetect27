@@ -6,10 +6,7 @@ import sys
 # sys.path.append("..")
 # from Helper import Helper
 import Utility
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
+import traceback
 
 class GetHashtagPopularity(object):
     """Get the number of results from google search."""
@@ -80,12 +77,16 @@ class GetHashtagPopularity(object):
 
         """
         page = BeautifulSoup(content, 'lxml')
-        if page.find(id='resultStats'):
-            numStr = page.find(id='resultStats').string.split()[-2]
-            numStr = ''.join(numStr.split(','))
-            results_cnt = int(numStr)
-        else:
-            print ("{}Error: no resultStats!{}".format('*' * 10, '*' * 10))
+        results_cnt = 0
+        try:
+            if page.find(id='resultStats') and page.find(id='resultStats').text:
+                numStr = page.find(id='resultStats').string.split()[-2]
+                numStr = ''.join(numStr.split(','))
+                results_cnt = int(numStr)
+            else:
+                print ("{}Error: no resultStats!{}".format('*' * 10, '*' * 10))
+        except:
+            traceback.print_exc()
         return results_cnt
 
     def google_crawl(self):

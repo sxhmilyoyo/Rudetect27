@@ -1,7 +1,7 @@
 # import sys
 # sys.path.append('../GetOldTweets-python')
 # sys.path.append('..')
-import got
+import got3
 # from Utility.Helper import Helper
 import Utility
 
@@ -18,8 +18,8 @@ class GetTwitterData(object):
             helper (object): the helper object for Utility.Helper module
 
         """
-        self.criteria = got.manager.TweetCriteria()
-        self.manager = got.manager.TweetManager()
+        self.criteria = got3.manager.TweetCriteria()
+        self.manager = got3.manager.TweetManager()
         self.helper = Utility.Helper(rootPath)
 
     def setCriteria(self, query=None, start=None, end=None, maxTweets=None, username=None):
@@ -41,7 +41,7 @@ class GetTwitterData(object):
                 start).setUntil(end).setMaxTweets(maxTweets)
         return criteria
 
-    def getTweets(self, criteria, folderPath, filename, tweetFlag):
+    def getTweets(self, criteria, folderPath, filename):
         """Get tweets.
 
         The crawled tweets saved as filename.
@@ -54,11 +54,10 @@ class GetTwitterData(object):
             None
 
         """
-        tweets, totalNumTweets = self.manager.getTweets(criteria, tweetFlag)
-        if tweetFlag:
-            self.helper.dumpPickle(folderPath, filename, tweets)
-            print ("{} has been saved with total {} tweets.".format(filename,
-                                                                     len(tweets)))
+        tweets, totalNumTweets = self.manager.getTweets(criteria)
+        self.helper.dumpPickle(folderPath, filename, tweets)
+        print ("{} has been saved with total {} tweets.".format(filename,
+                                                                len(tweets)))
         return totalNumTweets
 
     # def addressTweet(self, tweets, filename):

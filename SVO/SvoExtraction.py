@@ -3,7 +3,7 @@ import nltk
 from nltk.corpus import stopwords
 import os
 import pickle
-from trigram_tagger import SubjectTrigramTagger
+from .trigram_tagger import SubjectTrigramTagger
 
 
 class SvoExtraction(object):

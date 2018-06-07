@@ -1,1 +1,1 @@
-from GetCluster import GetCluster
+from .GetCluster import GetCluster

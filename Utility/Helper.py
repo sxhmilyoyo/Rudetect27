@@ -11,7 +11,7 @@ import pickle
 import scipy
 import sys
 sys.path.append('/usa/haoxu/Workplace/InfoLab/RuDetect27/GetOldTweets-python')
-import got
+import got3
 import Twitter
 import Utility
 

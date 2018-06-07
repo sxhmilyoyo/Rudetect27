@@ -1,1 +1,1 @@
-from Sentiment140API import Sentiment140API
+from .Sentiment140API import Sentiment140API

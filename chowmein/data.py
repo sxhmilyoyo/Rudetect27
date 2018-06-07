@@ -3,7 +3,7 @@ import nltk
 import itertools
 import codecs
 from toolz.functoolz import compose
-import cPickle as pickle
+import pickle
 
 CURDIR = os.path.dirname(os.path.realpath(__file__))
 

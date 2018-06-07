@@ -1,10 +1,10 @@
 # import sys
 # sys.path.append('..')
 from collections import defaultdict
-from MeanEmbeddingVectorizer import MeanEmbeddingVectorizer
+from .MeanEmbeddingVectorizer import MeanEmbeddingVectorizer
 from sklearn.cluster import KMeans
 from sklearn.pipeline import Pipeline
-from TfidfEmbeddingVectorizer import TfidfEmbeddingVectorizer
+from .TfidfEmbeddingVectorizer import TfidfEmbeddingVectorizer
 # from Utility.Helper import Helper
 # from Utility.PreprocessData import PreprocessData
 import Utility

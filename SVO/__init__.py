@@ -1,1 +1,1 @@
-from SvoExtraction import SvoExtraction
+from .SvoExtraction import SvoExtraction

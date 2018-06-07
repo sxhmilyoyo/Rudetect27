@@ -5,9 +5,6 @@ import os
 import requests
 import sys
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 
 class GoogleSnippets(object):
     """Get google search snippets."""
